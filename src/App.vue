@@ -1,17 +1,21 @@
 <script setup lang="ts">
+import FooterInput from '@/components/FooterInput.vue';
+import Footer from '@/components/Layout/Footer.vue';
+import Header from '@/components/Layout/Header.vue';
+import Main from '@/components/Layout/Main.vue';
+
+import Conversation from "@/components/Conversation/index.vue"
 </script>
 
 <template>
-  <header>
-    <div class="wrapper text-red-700 text-2xl">
-      hello
-    </div>
-  </header>
-
-  <main>
-  </main>
+  <Header>
+  </Header>
+  <Main>
+   <Conversation/>
+  </Main>
+  <Footer>
+    <FooterInput />
+  </Footer>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
