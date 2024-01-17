@@ -1,14 +1,39 @@
 <script lang='ts' setup>
 import SendSvgIcon from "@/components/IconsVue/SendSvgIcon.vue"
+import { state, handleSendClick } from "@/state/index"
+import { ref, watch } from "vue";
+const inputRef = ref<HTMLTextAreaElement | null>(null)
+const handleInput = () => {
+    if (inputRef.value) {
+        inputRef.value.style.height = 'auto'
+        inputRef.value.style.height = `${inputRef.value.scrollHeight}px`
+    }
+}
+const handleKeydown = (e: KeyboardEvent) => {
+    if (e.isComposing || e.shiftKey)
+      return
+
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleSendClick()
+    }
+  }
+
+  watch(()=> state.currentMsg,()=>{
+    if(!state.currentMsg){
+      inputRef.value!.style.height = 'auto'
+    }
+    
+  })
 </script>
 <template>
-    <textarea id="text-area-input" placeholder="Enter something..." autocomplete="off" rows="1"
-        value="Fugiat elit dolore amet et proident est veniam ea laboris dolore duis laborum. Ad eu pariatur proident aliqua magna dolore pariatur nostrud ut nostrud consectetur officia. Tempor duis culpa in voluptate incididunt aliquip exercitation tempor laboris cupidatat nostrud. Ipsum ex pariatur exercitation in officia dolore commodo. Elit enim nulla aliquip amet deserunt in. Occaecat ex dolore elit id elit quis magna Lorem commodo ad. Do reprehenderit dolor nostrud eu ut ad nostrud proident elit qui laborum."
-        class="h-24 border border-gray-300 rounded-md py-4 px-6 pr-12 w-full focus:outline-none focus:border-blue-500 transition duration-300 resize-none text-gray-950 placeholder:text-gray-500"
-        >
+    <textarea ref="inputRef" @input="handleInput" id="text-area-input" placeholder="Enter something..." autocomplete="off"
+        rows="1" v-model="state.currentMsg"
+        class="max-h-36 border bg-gray-800 border-gray-300 rounded-md py-4 px-6 pr-12 w-full focus:outline-none focus:border-blue-500 transition duration-300 resize-none text-white placeholder:text-gray-500"
+        @keydown="handleKeydown">
 
     </textarea>
-    <button class="
+    <button @click="handleSendClick" class="
         h-8
         w-8
         text-xl
@@ -24,7 +49,7 @@ import SendSvgIcon from "@/components/IconsVue/SendSvgIcon.vue"
         transition-all
         group
       ">
-        <SendSvgIcon class="group-hover:scale-125 group-hover:-rotate-12 transition-all"/>
+        <SendSvgIcon class="group-hover:scale-125 group-hover:-rotate-12 transition-all" />
     </button>
 </template>
 <style lang='css' scoped>
